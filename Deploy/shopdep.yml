@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-dep
+  labels:
+    app: shop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop
+  template:
+    metadata:
+      labels:
+        app: shop
+    spec:
+      containers:
+      - name: shop
+        image: aicareeracr.azurecr.io/assignment:latestv1
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: regcred	 	
