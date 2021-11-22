@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-dep
+  labels:
+    app: checkout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+    spec:
+      containers:
+      - name: checkout
+        image: aicareeracr.azurecr.io/assignment:latestv1
+        command: ["java"]
+        args: ["-jar", "/app.jar"]
+        env:
+        - name: _JAVA_OPTIONS
+          value: >
+            -Dspring.application.name=checkout 
+            -Dserver.servlet.context-path=/checkout
+        ports: 
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: regcred
