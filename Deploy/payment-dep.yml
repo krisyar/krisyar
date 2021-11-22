@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-dep
+  labels:
+    app: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+      - name: payment
+        image: aicareeracr.azurecr.io/assignment:latestv1
+        command: ["java"]
+        args: ["-jar", "/app.jar"]
+        env:
+        - name: _JAVA_OPTIONS
+          value: >
+            -Dspring.application.name=payment 
+            -Dserver.servlet.context-path=/payment
+        ports: 
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: regcred
